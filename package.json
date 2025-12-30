@@ -1,0 +1,46 @@
+{
+  "name": "smpl-1",
+  "version": "1.0.0",
+  "description": "SMPL-1: A Chrome extension audio sampler with waveform visualization for recording and manipulating browser audio",
+  "main": "main.js",
+  "dependencies": {
+    "anymatch": "^3.1.3",
+    "audiobuffer-to-wav": "^1.0.0",
+    "binary-extensions": "^2.2.0",
+    "braces": "^3.0.2",
+    "chokidar": "^3.5.3",
+    "esbuild": "^0.25.11",
+    "fill-range": "^7.0.1",
+    "glob-parent": "^5.1.2",
+    "immutable": "^4.3.4",
+    "is-binary-path": "^2.1.0",
+    "is-extglob": "^2.1.1",
+    "is-glob": "^4.0.3",
+    "is-number": "^7.0.0",
+    "jquery": "^3.7.1",
+    "lamejs": "^1.2.1",
+    "nanoid": "^3.3.7",
+    "normalize-path": "^3.0.0",
+    "picocolors": "^1.0.0",
+    "picomatch": "^2.3.1",
+    "postcss": "^8.4.31",
+    "readdirp": "^3.6.0",
+    "rollup": "^3.29.4",
+    "round-slider": "^1.6.1",
+    "source-map-js": "^1.0.2",
+    "to-regex-range": "^5.0.1",
+    "vite": "^4.5.0",
+    "wavesurfer.js": "^7.7.11"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["audio", "sampler", "chrome-extension", "waveform", "recording"],
+  "author": "Jacob Gundlach",
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.97.1"
+  }
+}

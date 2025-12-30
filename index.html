@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.scss" />
+    <script src="/lame.min.js"></script>
+    <title>Sampler</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sampler">
+        <div class="window">
+          <div class="waveScreen">
+            <div class="save-screen-content">
+              <h1 class="title">SMPL-1</h1>
+              <div class="save-controls">
+                <input type="text" id="save-name" placeholder="ENTER NAME" />
+                <div class="switch-container">
+                  <label class="switch">
+                    <span id="label-1">MP3</span>
+                    <span id="label-2">WAV</span>
+                    <input type="checkbox" id="format-toggle" />
+                    <span class="slider" id="slider-1"></span>
+                  </label>
+                </div>
+                <div class="switch-container">
+                  <label class="switch switch-2">
+                    <span id="label-1">CLIP</span>
+                    <span id="label-2">LOOP</span>
+                    <input type="checkbox" id="mode-toggle" />
+                    <span class="slider" id="slider-2"></span>
+                  </label>
+                </div>
+                <input type="button" value="SAVE" id="download" />
+              </div>
+              <a href="https://www.paypal.com/donate/?hosted_button_id=RRPS259CV28Y4" id="donate-link" target="_blank"></a>
+            </div>
+          </div>
+          <div class="waveform-controls">
+            <div class="zoom-control">
+              <input
+                type="range"
+                id="zoom-slider"
+                min="1"
+                max="100"
+                value="1"
+              />
+            </div>
+          </div>
+          <div class="wheels">
+            <div class="wheel"></div>
+            <div class="wheel"></div>
+          </div>
+        </div>
+        <div class="controls">
+          <div id="top">
+            <div class="cont">
+              <div class="dial" id="vol"></div>
+            </div>
+            <div class="cont">
+              <div class="dial" id="bass"></div>
+            </div>
+            <div class="cont">
+              <div class="dial" id="treb"></div>
+            </div>
+            <div class="cont">
+              <div id="tempo" class="dial"></div>
+            </div>
+          </div>
+          <div id="bottom">
+            <div class="control-btn">
+              <button class="btn" id="record"></button>
+            </div>
+            <div class="control-btn">
+              <button class="btn" id="play"></button>
+            </div>
+            <div class="control-btn">
+              <button class="btn" id="stop"></button>
+            </div>
+            <div class="control-btn">
+              <button class="btn" id="loop"></button>
+            </div>
+            <div class="control-btn">
+              <button class="btn" id="eject"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./src/js/main.js"></script>
+  </body>
+</html>
