@@ -1,14 +1,18 @@
-# Sampler Chrome Extension
+# SMPL-1: Sampler Chrome Extension
 
 An audio sampler with waveform visualization, built as a Chrome extension using WaveSurfer.js.
+
+<img width="1280" height="800" alt="Frame 1" src="https://github.com/user-attachments/assets/b758fa7a-81d7-47d0-80fb-81c9508dae15" />
+<img width="1280" height="800" alt="Frame 2" src="https://github.com/user-attachments/assets/975fd2c8-1ba7-4684-b4ab-a6bf74385bd2" />
+<img width="1280" height="800" alt="Frame 3" src="https://github.com/user-attachments/assets/8a02a3bd-3ff2-47da-8ac5-3900ae3281ed" />
 
 ## Features
 
 - 🎵 Record audio from browser tabs (YouTube, Spotify, etc.)
 - 🎚️ Visual waveform display
-- 🔊 Playback controls with cassette-style UI
+- 🔊 Playback controls with OP-1 style UI
 - 🔄 Loop region support
-- 🎚️ Volume, bass, treble, and tempo controls
+- 🎚️ Volume, Highpass, Lowpass, and Playback Rate controls
 - 🔍 Zoom functionality
 
 ## Quick Start
@@ -55,7 +59,6 @@ An audio sampler with waveform visualization, built as a Chrome extension using 
 └── vite.config.js              # Vite build config
 ```
 
-For detailed module documentation, see [`src/js/README.md`](./src/js/README.md).
 
 ## Requirements
 
