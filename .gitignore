@@ -20,7 +20,3 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Test files
-*.wav
-*.mp3
-Sayin.wav
