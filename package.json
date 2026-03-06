@@ -35,6 +35,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:chrome": "vite build",
+    "build:firefox": "vite build --mode firefox",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["audio", "sampler", "chrome-extension", "waveform", "recording"],

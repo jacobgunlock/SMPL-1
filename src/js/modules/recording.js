@@ -2,7 +2,7 @@ import { RECORDING_TEXT_STYLES } from "../config/constants.js";
 import { getWaveSurfer } from "./wavesurfer.js";
 import { getAudioContext } from "./audioContext.js";
 import { smoothStopWheel } from "./playback.js";
-import { saveRecordedAudio } from "./audioStorage.js";
+import { saveRecordedAudio, loadRecordedAudio } from "./audioStorage.js";
 
 let isRecording = false;
 let mediaRecorder = null;
@@ -265,20 +265,13 @@ function stopLiveWaveform() {
 
 /**
  * Start recording audio from browser tabs (e.g., YouTube videos)
+ * @param {MediaStream} preAcquiredStream - Display stream obtained in the click handler
  */
-async function startRecording() {
+async function startRecording(preAcquiredStream) {
   try {
-    // Request screen/desktop audio capture (browser will show dialog to select tab)
-    // Request audio with video option for better browser compatibility
-    displayStream = await navigator.mediaDevices.getDisplayMedia({
-      audio: {
-        echoCancellation: false,
-        noiseSuppression: false,
-        autoGainControl: false,
-        suppressLocalAudioPlayback: false,
-      },
-      video: true, // Some browsers require video to be true, but we'll only use audio tracks
-    });
+    // Use the stream acquired directly in the click handler (required for Firefox
+    // user-gesture activation — getDisplayMedia must be the first await in the handler).
+    displayStream = preAcquiredStream;
 
     // Extract only audio tracks (filter out video tracks)
     const audioTracks = displayStream.getAudioTracks();
@@ -471,26 +464,98 @@ export function initializeRecordingControls() {
   recordingText.style.display = "none";
   waveScreen.appendChild(recordingText);
 
-  recordBtn.addEventListener("click", async () => {
-    isRecording = !isRecording;
-    recordBtn.classList.toggle("recording");
-    waveScreen.classList.toggle("recording");
+  if (navigator.userAgent.includes("Firefox")) {
+    // Firefox: persistent content script (content-capture.js) does the actual
+    // capture via createMediaElementSource — same approach as the reference extension.
+    // Background script brokers messages between here and the content script.
+    let recordingTabId = null;
 
-    if (isRecording) {
+    // Handle messages from background: errors and recording-complete.
+    browser.runtime.onMessage.addListener((msg) => {
+      if (msg?.captureError) {
+        isRecording = false;
+        recordBtn.classList.remove("recording");
+        waveScreen.classList.remove("recording");
+        recordingText.style.display = "none";
+        recordingTabId = null;
+        alert("Recording error: " + msg.captureError);
+      }
+      if (msg?.captureReady && msg.dataUrl) {
+        const wavesurfer = getWaveSurfer();
+        if (wavesurfer) wavesurfer.load(msg.dataUrl);
+      }
+    });
+
+    recordBtn.addEventListener("click", async () => {
+      if (!isRecording) {
+        const [activeTab] = await browser.tabs.query({ active: true, lastFocusedWindow: true });
+        if (!activeTab?.id) return;
+        recordingTabId = activeTab.id;
+
+        isRecording = true;
+        recordBtn.classList.add("recording");
+        waveScreen.classList.add("recording");
+        recordingText.style.display = "block";
+        recordingText.textContent = "recording...";
+        Object.assign(recordingText.style, RECORDING_TEXT_STYLES);
+
+        browser.runtime.sendMessage({ cmd: "startCapture", tabId: recordingTabId }).catch(() => {});
+      } else {
+        browser.runtime.sendMessage({ cmd: "stopCapture", tabId: recordingTabId }).catch(() => {});
+        isRecording = false;
+        recordBtn.classList.remove("recording");
+        waveScreen.classList.remove("recording");
+        recordingText.style.display = "none";
+        recordingTabId = null;
+      }
+    });
+  } else {
+    // Chrome: acquire the display stream as the first await directly in the
+    // click handler to preserve user-gesture activation.
+    recordBtn.addEventListener("click", async () => {
+      if (isRecording) {
+        isRecording = false;
+        recordBtn.classList.remove("recording");
+        waveScreen.classList.remove("recording");
+        recordingText.style.display = "none";
+        stopRecording();
+        return;
+      }
+
+      let acquiredStream;
+      try {
+        acquiredStream = await navigator.mediaDevices.getDisplayMedia({
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false,
+          },
+          video: true,
+        });
+      } catch (error) {
+        if (error.name === "NotAllowedError") {
+          alert(
+            "Please allow screen/tab sharing to record audio from browser tabs."
+          );
+        } else if (error.name === "NotFoundError") {
+          alert("No audio source found. Please select a tab with audio playing.");
+        } else {
+          alert(
+            "Could not access browser audio. Please check permissions and try again."
+          );
+        }
+        return;
+      }
+
+      isRecording = true;
+      recordBtn.classList.add("recording");
+      waveScreen.classList.add("recording");
       recordingText.style.display = "block";
       recordingText.textContent = "recording...";
-
-      // Apply styles
       Object.assign(recordingText.style, RECORDING_TEXT_STYLES);
 
-      // Start recording
-      await startRecording();
-    } else {
-      recordingText.style.display = "none";
-
-      // Stop recording
-      stopRecording();
-    }
-  });
+      await startRecording(acquiredStream);
+    });
+  }
 }
 export { isRecording };
