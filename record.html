@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SMPL-1 · Recording</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background: #14141e;
+        color: #64b5f6;
+        font-family: monospace;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        height: 100vh;
+      }
+      #start-btn {
+        background: #64b5f6;
+        color: #14141e;
+        border: none;
+        padding: 6px 16px;
+        cursor: pointer;
+        font-family: monospace;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      #dot { font-size: 18px; color: #ff5252; display: none; }
+      #status { display: none; }
+        background: #ff5252;
+        color: #fff;
+        border: none;
+        padding: 5px 14px;
+        cursor: pointer;
+        font-family: monospace;
+        font-size: 12px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <span id="dot" style="display:none">●</span>
+    <button id="start-btn">▶ START RECORDING</button>
+    <span id="status"></span>
+    <button id="stop-btn">STOP</button>
+    <script type="module" src="./src/js/record-popup.js"></script>
+  </body>
+</html>

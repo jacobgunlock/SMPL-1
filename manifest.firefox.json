@@ -1,0 +1,43 @@
+{
+  "manifest_version": 2,
+  "name": "SMPL-1",
+  "version": "1.0.0",
+  "description": "SMPL-1: An audio sampler with waveform visualization for recording and manipulating browser audio",
+  "icons": {
+    "16": "assets/record-btn.png",
+    "48": "assets/record-btn.png",
+    "128": "assets/record-btn.png"
+  },
+  "browser_action": {
+    "default_title": "Open SMPL-1",
+    "default_icon": {
+      "16": "assets/record-btn.png",
+      "48": "assets/record-btn.png",
+      "128": "assets/record-btn.png"
+    }
+  },
+  "sidebar_action": {
+    "default_panel": "index.html",
+    "default_title": "SMPL-1",
+    "default_icon": {
+      "16": "assets/record-btn.png"
+    }
+  },
+  "permissions": ["storage", "tabs", "<all_urls>"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content-capture.js"],
+    "run_at": "document_idle"
+  }],
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "smpl-1@extension"
+    }
+  }
+}
+
